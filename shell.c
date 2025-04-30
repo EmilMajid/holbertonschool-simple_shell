@@ -13,11 +13,11 @@ int main(void)
 	char **argv;
 	char *arg;
 	unsigned long line_len = 0;
-	unsigned long line_read = 0;
+	long line_read = 0;
 	unsigned long argc = 0;
 	unsigned long i = 0;
 	unsigned int pid;
-	unsigned int status;
+	int status;
 
 	while (1)
 	{
