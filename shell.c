@@ -73,25 +73,22 @@ char *search_path_for_command(char *command, int *status)
 	return (NULL);
 }
 
-void fork_and_execute(char **argv)
+int fork_and_execute(char **argv)
 {
 	pid_t pid;
 	int status;
 
-	if (argv == NULL)
-	{
-		return;
-	}
-
 	pid = fork();
 	if (pid == 0)
 	{
-		execve(argv[0], argv, environ);
+		status = execve(argv[0], argv, environ);
 	}
 	else
 	{
 		wait(&status);
+		return (WEXITSTATUS(status));
 	}
+	return (status);
 }
 
 char **string_to_words_array(char *line, int *status)
@@ -123,10 +120,13 @@ char **string_to_words_array(char *line, int *status)
 		*(argv + i) = arg;
 		arg = strtok(NULL, " \n");
 	}
-	argv[i] = NULL;
+
+	argv[i] = NULL;	
+/*
 	if (strcmp(argv[i - 1], "exit") == 0)
 		*status = 2;
-
+*/
+	(void)status;
 	return (argv);
 }
 
@@ -143,7 +143,6 @@ int main(void)
 		line = NULL;
 		argv = NULL;
 		input_length = getline(&line, &buffer_length, stdin);
-
 		if (input_length == -1)
 		{
 			free(line);
@@ -158,7 +157,6 @@ int main(void)
 		if (strcmp(argv[0], "exit") == 0)
 		{
 			free(argv), free(line);
-			status = 0;
 			break;
 		}
 		argv[0] = search_path_for_command(argv[0], &status);
@@ -168,7 +166,7 @@ int main(void)
 			continue;
 		}
 
-		fork_and_execute(argv);
+		status = fork_and_execute(argv);
 		free(argv[0]), free(argv), free(line);
 	}
 	exit(status);
