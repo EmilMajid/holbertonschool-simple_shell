@@ -10,9 +10,9 @@
 #include <errno.h>
 
 extern char **environ;
-int fork_and_execute(char **argv)
-char **string_to_words_array(char *line, int *status)
-char *search_path_for_command(char *command, int *status)
-char *get_path(void)
+int fork_and_execute(char **argv);
+char **string_to_words_array(char *line, int *status);
+char *search_path_for_command(char *command, int *status);
+char *get_path(void);
 
 #endif
