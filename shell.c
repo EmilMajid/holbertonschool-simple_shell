@@ -25,6 +25,7 @@ char *get_path(void)
 		if (strncmp(*env, "PATH=", 5) == 0)
 		{
 			path = *env + 5;
+			printf("DEBUG: PATH=%s\n", path);
 			return (path);
 		}
 		env++;
@@ -136,7 +137,117 @@ char **string_to_words_array(char *line, int *status)
 
 	if (argc == 0)
 	{
-		return (NULL);
+
+        argv[i] = NULL;
+
+        if (strcmp(argv[i - 1], "exit") == 0)
+                *status = 2;
+
+        (void)status;
+        return (argv);
+}
+
+/**
+ * main - the main function
+ *
+ * Return: exit status
+ */
+int main(void)
+{
+        char *line = NULL;
+        char **argv = NULL;
+        size_t buffer_length = 0;
+        ssize_t input_length = 0;
+        int status = 0;
+
+
+        argv[i] = NULL;
+
+        if (strcmp(argv[i - 1], "exit") == 0)
+                *status = 2;
+
+        (void)status;
+        return (argv);
+}
+
+/**
+ * main - the main function
+ *
+ * Return: exit status
+ */
+int main(void)
+{
+        char *line = NULL;
+        char **argv = NULL;
+        size_t buffer_length = 0;
+        ssize_t input_length = 0;
+        int status = 0;
+
+        while (1)
+        {
+                line = NULL;
+                argv = NULL;
+                input_length = getline(&line, &buffer_length, stdin);
+                if (input_length == -1)
+                {
+                        free(line);
+                        break;
+                }
+                argv = string_to_words_array(line, &status);
+                if (argv == NULL)
+                {
+                        free(argv), free(line);
+                        continue;
+                }
+                if (strcmp(argv[0], "exit") == 0)
+                {
+                        free(argv), free(line);
+                        break;
+                }
+                argv[0] = search_path_for_command(argv[0], &status);
+                if (argv[0] == NULL)
+                {
+                        free(argv), free(line);
+                        continue;
+                }
+
+                status = fork_and_execute(argv);
+                free(argv[0]), free(argv), free(line);
+        }
+        exit(status);
+}        while (1)
+        {
+                line = NULL;
+                argv = NULL;
+                input_length = getline(&line, &buffer_length, stdin);
+                if (input_length == -1)
+                {
+                        free(line);
+                        break;
+                }
+                argv = string_to_words_array(line, &status);
+                if (argv == NULL)
+                {
+                        free(argv), free(line);
+                        continue;
+                }
+                if (strcmp(argv[0], "exit") == 0)
+                {
+                        free(argv), free(line);
+                        break;
+                }
+                argv[0] = search_path_for_command(argv[0], &status);
+                if (argv[0] == NULL)
+                {
+                        free(argv), free(line);
+                        continue;
+                }
+
+                status = fork_and_execute(argv);
+                free(argv[0]), free(argv), free(line);
+        }
+        exit(status);
+}		return (NULL);
 	}
 
 	argv = malloc(sizeof(char *) * (argc + 1));
