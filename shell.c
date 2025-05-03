@@ -8,7 +8,11 @@
 #include <errno.h>
 #include "main.h"
 
-
+/**
+ * get_path - returns the PATH
+ *
+ * Return: the path
+ */
 char *get_path(void)
 {
 	char **env = environ;
@@ -120,12 +124,12 @@ char **string_to_words_array(char *line, int *status)
 		*(argv + i) = arg;
 		arg = strtok(NULL, " \n");
 	}
-
+	
 	argv[i] = NULL;	
-/*
+
 	if (strcmp(argv[i - 1], "exit") == 0)
 		*status = 2;
-*/
+
 	(void)status;
 	return (argv);
 }
