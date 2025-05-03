@@ -25,7 +25,6 @@ char *get_path(void)
 		if (strncmp(*env, "PATH=", 5) == 0)
 		{
 			path = *env + 5;
-			printf("DEBUG: PATH=%s\n", path);
 			return (path);
 		}
 		env++;
