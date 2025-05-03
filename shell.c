@@ -82,7 +82,7 @@ char *search_path_for_command(char *command, int *status)
 	fprintf(stderr, "./hsh: 1: %s: not found\n", command);
 	*status = 127;
 	free(path_copy);
-	return (NUL);
+	return (NULL);
 }
 /**
  * fork_and_execute - Creates a child process and executes a command
