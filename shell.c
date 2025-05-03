@@ -32,7 +32,15 @@ char *get_path(void)
 	return (NULL);
 }
 
-
+/**
+ * search_path_for_command - Searches for the full path of a command
+ * in directories listed in $PATH.
+ * @command: The command to search for.
+ * @status: The status code that is updated if the command is not found.
+ *
+ * Return: The full path to the command if found, or NULL if not found.
+ *         If the command is already a full path, it is returned as is.
+ */
 char *search_path_for_command(char *command, int *status)
 {
 	char *path = NULL;
@@ -74,9 +82,14 @@ char *search_path_for_command(char *command, int *status)
 	fprintf(stderr, "./hsh: 1: %s: not found\n", command);
 	*status = 127;
 	free(path_copy);
-	return (NULL);
+	return (NUL);
 }
-
+/**
+ * fork_and_execute - Creates a child process and executes a command
+ * @argv: Array of command arguments
+ *
+ * Return: Exit status of the command executed.
+ */
 int fork_and_execute(char **argv)
 {
 	pid_t pid;
@@ -95,6 +108,15 @@ int fork_and_execute(char **argv)
 	return (status);
 }
 
+/**
+ * string_to_words_array - Splits a string into an array of words.
+ * @line: The string to split into words.
+ * @status: The status code that is updated if the last word is "exit".
+ *
+ * Return: An array of strings (words) from the input string, or NULL
+ *         if the string contains no words.
+ *         The array is NULL-terminated.
+ */
 char **string_to_words_array(char *line, int *status)
 {
 	char *line_copy = NULL;
@@ -124,8 +146,7 @@ char **string_to_words_array(char *line, int *status)
 		*(argv + i) = arg;
 		arg = strtok(NULL, " \n");
 	}
-	
-	argv[i] = NULL;	
+	argv[i] = NULL;
 
 	if (strcmp(argv[i - 1], "exit") == 0)
 		*status = 2;
@@ -134,6 +155,11 @@ char **string_to_words_array(char *line, int *status)
 	return (argv);
 }
 
+/**
+ * main - the main function
+ *
+ * Return: exit status
+ */
 int main(void)
 {
 	char *line = NULL;
